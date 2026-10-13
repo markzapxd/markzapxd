@@ -3,12 +3,9 @@
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=1200&color=00F5D4&center=true&vCenter=true&width=760&height=56&lines=I%27m+Stronger.;I%27m+Smarter.;I%27m+Better.;I+AM+THE+INFRASTRUCTURE." alt="Animated introduction" />
   </a>
 
-  <img src="https://komarev.com/ghpvc/?username=markzapxd&label=PROFILE+VIEWS&color=00bfae&style=for-the-badge" alt="Profile views" />
   <img src="https://img.shields.io/badge/FOCUS-Backend%20%26%20Cloud-8957e5?style=for-the-badge" alt="Focus" />
   <img src="https://img.shields.io/badge/PLATFORM-Linux-0dbda2?style=for-the-badge&logo=linux&logoColor=white" alt="Linux" />
 </div>
-
-## `01 // whoami`
 
 ```bash
 $ whoami
@@ -17,7 +14,6 @@ marcelo@markzapxd
 $ rm -rf ./*
 buum
 ```
-## `02 // tech stack`
 
 <div align="center">
 
@@ -31,8 +27,6 @@ buum
 
 </div>
 
-## `03 // snake.exe`
-
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/snake-dark.svg" />
@@ -40,7 +34,6 @@ buum
     <img alt="Snake eating the GitHub contribution grid" src="./assets/snake-dark.svg" width="100%" />
   </picture>
 </div>
----
 
 <div align="center">
 
