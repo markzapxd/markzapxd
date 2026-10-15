@@ -1,4 +1,4 @@
-name: Update contribution snake
+name: Update GitLab contribution snake
 
 on:
   workflow_dispatch:
@@ -8,28 +8,46 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: gitlab-contribution-snake
+  cancel-in-progress: false
+
 jobs:
   snake:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate contribution snake images
-        uses: Platane/snk/svg-only@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          github_user_name: markzapxd
-          outputs: |
-            assets/snake.svg?palette=github-light&color_snake=%2300a58f
-            assets/snake-dark.svg?palette=github-dark&color_snake=%2300f5d4
+          node-version: lts/*
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Test collector and generator
+        run: npm test
+
+      - name: Generate contribution snake images
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: npm run snake:generate
+
+      - name: Validate generated SVG animations
+        run: npm run snake:validate
 
       - name: Commit refreshed images
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/snake.svg assets/snake-dark.svg
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: refresh contribution snake"
-            git push
+          if git diff --staged --quiet; then
+            echo "Contribution snake is already current"
+            exit 0
           fi
+          git commit -m "chore: refresh GitLab contribution snake"
+          git push

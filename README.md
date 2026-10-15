@@ -43,9 +43,19 @@ buum
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/snake.svg" />
-    <img alt="Snake eating the GitHub contribution grid" src="./assets/snake-dark.svg" width="100%" />
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="./assets/snake-dark.svg"
+    />
+    <source
+      media="(prefers-color-scheme: light)"
+      srcset="./assets/snake.svg"
+    />
+    <img
+      alt="GitLab contribution snake"
+      src="./assets/snake.svg"
+      width="100%"
+    />
   </picture>
 </div>
 

@@ -1,42 +1,67 @@
-# Setup — GitHub profile `@markzapxd`
+# GitLab contribution snake setup
 
-This package was prepared for the public profile `https://github.com/markzapxd`.
+The profile renders `assets/snake.svg` and `assets/snake-dark.svg` from the
+authenticated activity of GitLab user `marcelo` (ID `30`) on
+`https://git.garten.com.br`. The SVG animation, route solver, and renderer come
+from [`Platane/snk`](https://github.com/Platane/snk).
 
-## What's included
+## GitHub Actions
 
-- `README.md`: a complete cyberpunk-style profile.
-- `assets/banner.svg`: a custom vector banner for this profile, with no external service dependencies.
-- `assets/snake.svg` and `assets/snake-dark.svg`: previews that will be replaced by the actual animation.
-- `.github/workflows/snake.yml`: a workflow that updates the snake daily and can also be run manually.
+1. Create a GitLab personal access token with only the `read_user` scope.
+2. In `markzapxd/markzapxd`, open **Settings → Secrets and variables → Actions**.
+3. Add a repository secret named `GITLAB_TOKEN`. Never add its value to a file
+   or workflow input.
+4. Open **Actions → Update GitLab contribution snake → Run workflow**.
 
-## Publish on GitHub (using a browser + local Git)
+The workflow also runs every day at 05:24 UTC. It installs dependencies with
+`npm ci`, tests the collector, generates both themes, validates that the files
+contain the original snake animation, and commits only changed SVGs. Concurrent
+runs are serialized.
 
-1. Create a **public** repository named exactly `markzapxd` at `https://github.com/new`.
-2. Select **Add a README file** when creating the repository.
-3. Clone the repository (Git must be configured, and you must have push permissions):
+## Local execution
 
-   ```bash
-   git clone https://github.com/markzapxd/markzapxd.git
-   cd markzapxd
-   ```
+Node.js LTS is required.
 
-4. Copy `README.md`, the `assets/` folder, and the `.github/` folder from this package to the root of the cloned repository.
-5. Push to GitHub:
+```bash
+npm ci
+GITLAB_TOKEN='<read_user token>' npm run snake:generate
+npm run snake:validate
+npm test
+npm run typecheck
+```
 
-   ```bash
-   git add README.md assets/ .github/workflows/snake.yml
-   git commit -m "feat: personalize GitHub profile"
-   git push
-   ```
+`GITLAB_BASE_URL` and `GITLAB_USER_ID` may override the configured instance and
+user for local diagnostics. Do not store the token in `.env` or shell history.
 
-6. At `https://github.com/markzapxd/markzapxd/actions`, enable GitHub Actions if prompted.
-7. Run `Update contribution snake` → `Run workflow` once.
-8. If generation or committing fails, check `Settings → Actions → General → Workflow permissions`; the workflow token needs write permissions for the repository. Branch protection rules may prevent automated pushes.
+## Counting rule
 
-The actual snake animation appears only after the first successful run. The statistics cards and typing animation rely on external services and may be subject to rate limits or outages.
+The collector requests the 365 UTC dates ending today from
+`GET /api/v4/users/30/events`, follows every pagination link, and deduplicates
+rows by event ID. Each visible GitLab event counts as one contribution on the
+UTC date of `created_at`. A push event therefore counts once, regardless of
+`push_data.commit_count`; bulk pushes can report zero commits. Empty dates are
+filled with zero. Non-zero intensity levels 1 through 4 are proportional to the
+largest daily count in the current window.
 
-## Customize
+These values can differ from GitLab's official calendar. The Events API omits
+some merge request and epic activity, returns only activity visible to the
+token, and can aggregate bulk pushes. No project names, titles, or other event
+details are written to the SVGs.
 
-- Update the text in `README.md` to match your profile.
-- Edit `assets/banner.svg` to change the colors, name, or subtitle.
-- Reorder the featured repositories. They were selected from the public repositories reviewed in October 2026.
+The current `snk` GitLab provider supports a custom host, but it reads the
+public `/users/:username/calendar.json` endpoint. That endpoint returns an empty
+object on this instance and accepts no API token. The local adapter supplies the
+authenticated, aggregated counts to the unmodified `snk` animation pipeline.
+
+## Troubleshooting
+
+- **HTTP 401 or 403:** replace `GITLAB_TOKEN` and confirm its `read_user` scope
+  and access to user ID `30`.
+- **Timeout, HTTP 429, or HTTP 5xx:** the client retries transient failures with
+  backoff and honors `Retry-After`. The job fails after the retry limit.
+- **No events:** generation fails before writing files, so existing SVGs remain
+  intact. Confirm the token can see activity in the last 365 UTC dates.
+- **Push rejected:** enable read/write workflow permissions and check branch
+  protection rules.
+- **Invalid SVG:** run `npm test` and `npm run snake:validate`; validation
+  requires SVG structure, CSS keyframes, snake segments, and animation bindings.
