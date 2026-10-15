@@ -45,8 +45,8 @@ test("collects mocked GitLab events and writes both animated SVGs", async () => 
       fetch: fakeFetch,
     });
     const [light, dark] = await Promise.all([
-      readFile("assets/snake.svg", "utf8"),
-      readFile("assets/snake-dark.svg", "utf8"),
+      readFile("assets/gitlab-snake.svg", "utf8"),
+      readFile("assets/gitlab-snake-dark.svg", "utf8"),
     ]);
     validateAnimatedSvg(light, "#00a58f");
     validateAnimatedSvg(dark, "#00f5d4");

@@ -42,21 +42,45 @@ buum
   <br>
 
 <div align="center">
-  <picture>
-    <source
-      media="(prefers-color-scheme: dark)"
-      srcset="./assets/snake-dark.svg"
-    />
-    <source
-      media="(prefers-color-scheme: light)"
-      srcset="./assets/snake.svg"
-    />
-    <img
-      alt="GitLab contribution snake"
-      src="./assets/snake.svg"
-      width="100%"
-    />
-  </picture>
+
+**GITHUB: PUBLIC**
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="./assets/snake-dark.svg"
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="./assets/snake.svg"
+  />
+  <img
+    alt="Public GitHub contribution snake"
+    src="./assets/snake.svg"
+    width="100%"
+  />
+</picture>
+
+<br>
+
+**GITLAB: PRIVATE**
+
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="./assets/gitlab-snake-dark.svg"
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="./assets/gitlab-snake.svg"
+  />
+  <img
+    alt="Private GitLab contribution snake"
+    src="./assets/gitlab-snake.svg"
+    width="100%"
+  />
+</picture>
+
 </div>
 
   <br>

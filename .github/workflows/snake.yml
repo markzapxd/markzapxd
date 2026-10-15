@@ -1,4 +1,4 @@
-name: Update GitLab contribution snake
+name: Update GitHub and GitLab contribution snakes
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: gitlab-contribution-snake
+  group: contribution-snakes
   cancel-in-progress: false
 
 jobs:
@@ -32,7 +32,15 @@ jobs:
       - name: Test collector and generator
         run: npm test
 
-      - name: Generate contribution snake images
+      - name: Generate public GitHub contribution snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: markzapxd
+          outputs: |
+            assets/snake.svg?palette=github-light&color_snake=%2300a58f
+            assets/snake-dark.svg?palette=github-dark&color_snake=%2300f5d4
+
+      - name: Generate private GitLab contribution snake
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: npm run snake:generate
@@ -44,10 +52,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/snake.svg assets/snake-dark.svg
+          git add assets/snake.svg assets/snake-dark.svg \
+            assets/gitlab-snake.svg assets/gitlab-snake-dark.svg
           if git diff --staged --quiet; then
-            echo "Contribution snake is already current"
+            echo "Contribution snakes are already current"
             exit 0
           fi
-          git commit -m "chore: refresh GitLab contribution snake"
+          git commit -m "chore: refresh contribution snakes"
           git push

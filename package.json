@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "snake:generate": "tsx scripts/snake/generate.ts",
-    "snake:validate": "tsx scripts/snake/validate.ts assets/snake.svg assets/snake-dark.svg",
+    "snake:validate": "tsx scripts/snake/validate.ts assets/snake.svg assets/snake-dark.svg assets/gitlab-snake.svg assets/gitlab-snake-dark.svg",
     "test": "node --import tsx --test tests/snake/*.test.ts",
     "typecheck": "tsc --noEmit"
   },

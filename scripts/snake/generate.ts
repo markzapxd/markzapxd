@@ -108,8 +108,8 @@ export const generate = async (options: GenerateOptions = {}): Promise<void> => 
   const contributions = buildContributions(events, options.today ?? new Date());
   const [light, dark] = await renderSnakes(contributionCounts(contributions));
   await Promise.all([
-    writeAtomically("assets/snake.svg", light),
-    writeAtomically("assets/snake-dark.svg", dark),
+    writeAtomically("assets/gitlab-snake.svg", light),
+    writeAtomically("assets/gitlab-snake-dark.svg", dark),
   ]);
   console.log(`Generated animated snakes from ${events.length} unique GitLab events`);
 };
